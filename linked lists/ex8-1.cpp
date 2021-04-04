@@ -18,21 +18,31 @@ template <typename T> struct ListNode {
 // process). This is O(n + m) in the worst case.
 std::shared_ptr<ListNode<int>> merge(std::shared_ptr<ListNode<int>> &L1,
                                      std::shared_ptr<ListNode<int>> &L2) {
-  std::shared_ptr<ListNode<int>> result;
+  std::shared_ptr<ListNode<int>> result(new ListNode<int>);
+  auto tail = result;
 
-  while (L1 || L2) {
+  while (L1 && L2) {
+    // append smaller node to result
     if (L1->data <= L2->data) {
-      result->next = L1;
-      if (L1->next)
-        L1 = L1->next;
+      tail->next = L1;
+      tail = L1;
+      L1 = L1->next;
     } else {
-      result->next = L2;
-      if (L2->next)
-        L2 = L2->next;
+      tail->next = L1;
+      tail = L1;
+      L1 = L1->next;
     }
+
+    if (L1) {
+      tail->next = L1;
+    } else if (L2) {
+      tail->next = L2;
+    }
+
+    return result->next;
   }
 
-  return result;
+  return result->next;
 }
 
 int main() { return 0; }
