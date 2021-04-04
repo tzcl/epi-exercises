@@ -3,6 +3,11 @@
 
 #include <bits/stdc++.h>
 
+template <typename T> struct ListNode {
+  T data;
+  std::shared_ptr<ListNode<T>> next;
+};
+
 // Hard to write real code for this without my own linked list implementation
 // (C++'s forward_lists work differently to barebones linked lists)
 //
@@ -11,12 +16,12 @@
 // The solution uses a clever idea. Just iterate over L1 && L2 and once you
 // reach the end of one, just add the remaining list to the end (no need to
 // process). This is O(n + m) in the worst case.
-std::forward_list<int> merge(std::forward_list<int> &L1,
-                             std::forward_list<int> &L2) {
-  std::forward_list<int> result;
+std::shared_ptr<ListNode<int>> merge(std::shared_ptr<ListNode<int>> &L1,
+                                     std::shared_ptr<ListNode<int>> &L2) {
+  std::shared_ptr<ListNode<int>> result;
 
   while (L1 || L2) {
-    if (L1.data <= L2.data) {
+    if (L1->data <= L2->data) {
       result->next = L1;
       if (L1->next)
         L1 = L1->next;
